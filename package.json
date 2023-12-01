@@ -1,0 +1,37 @@
+{
+	"name": "api_products",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "ts-node-dev src/index.ts --watch",
+		"prepare": "npx husky install"
+	},
+	"keywords": [],
+	"author": "Ángel Zamora",
+	"license": "ISC",
+	"dependencies": {
+		"axios": "^1.6.2",
+		"cors": "^2.8.5",
+		"dotenv": "^16.3.1",
+		"express": "^4.18.2"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^18.4.3",
+		"@commitlint/config-conventional": "^18.4.3",
+		"@types/cors": "^2.8.17",
+		"@types/express": "^4.17.21",
+		"@types/node": "^20.10.1",
+		"@typescript-eslint/eslint-plugin": "^6.13.1",
+		"@typescript-eslint/parser": "^6.13.1",
+		"eslint": "^8.54.0",
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-plugin-prettier": "^5.0.1",
+		"husky": "^8.0.3",
+		"jest": "^29.7.0",
+		"prettier": "^3.1.0",
+		"supertest": "^6.3.3",
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^5.3.2"
+	}
+}
