@@ -3,44 +3,64 @@ import { paginatedResponse } from '../service/formatter';
 import { requestHandler } from '../service/http';
 import { PathBuilder } from '../service/query';
 import 'dotenv/config';
+import { ProductsResponse, RouteParams } from '../types/api';
+import {
+	//Body,
+	//Controller,
+	Get,
+	Path,
+	Queries,
+	Route,
+	//SuccessResponse,
+} from 'tsoa';
 
-export const getProducts = async (
+export const productsController = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
 	try {
-		const query = req.query;
-		let path = '';
-		if (query) path = PathBuilder(query);
+		const handler = new ProductsHandler();
+		const id = req.params.id;
+		const response = id
+			? await handler.getProduct(id, req.query)
+			: await handler.getProducts(req.query);
+
+		return res.status(response.status).json(response);
+	} catch (error) {
+		next(error);
+	}
+};
+
+@Route('api/products')
+export class ProductsHandler {
+	/**
+	 * # Recupera una lista de productos
+	 *
+	 * @param query
+	 * @returns
+	 */
+	@Get('')
+	async getProducts(@Queries() query?: RouteParams): Promise<ProductsResponse> {
+		const path = query ? PathBuilder(query) : '';
 		const { data, status } = await requestHandler(path);
 		const docs = paginatedResponse(
 			data,
 			Number(query?.page) || undefined,
 			Number(query?.rows) || undefined
 		);
-		return res.status(status).json(docs);
-	} catch (error) {
-		next(error);
+		return { docs, status };
 	}
-};
 
-export const getProduct = async (
-	req: Request,
-	res: Response,
-	next: NextFunction
-) => {
-	try {
-		const id = req.params.id;
-		const query = req.query;
+	@Get('{id}')
+	async getProduct(@Path('id') id: string, @Queries() query?: RouteParams) {
 		let path = `/${id}`;
-		if (query.select) path = `${path}?select=${query.select}`;
+		if (query?.select) path = `${path}?select=${query.select}`;
 		const { data, status } = await requestHandler(path);
-		return res.status(status).json({ doc: data });
-	} catch (error) {
-		next(error);
+
+		return { doc: data, status };
 	}
-};
+}
 
 export const getCategories = async (
 	req: Request,

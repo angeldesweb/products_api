@@ -1,10 +1,10 @@
-import { ProductsResponse } from '../types/api';
+import { ProductsData } from '../types/api';
 import 'dotenv/config';
 
 const apiURL = process.env.API_URL || 'http://localhost:3000/api/products';
 
 export const paginatedResponse = (
-	docs: ProductsResponse,
+	docs: ProductsData,
 	page: number | undefined,
 	rows: number | undefined
 ) => {
