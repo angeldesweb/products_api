@@ -4,9 +4,11 @@
 	"description": "Una api para el consumo de dummyjson",
 	"main": "index.js",
 	"scripts": {
+		"build": "tsc -p .",
 		"docs": "tsoa spec && tsoa routes",
-		"dev": "ts-node-dev src/index.ts --watch",
-		"prepare": "npx husky install"
+		"dev": "concurrently \"npm:docs\" \"ts-node-dev src/index.ts --watch\"",
+		"prepare": "npx husky install",
+		"start":"concurrently \"npm:build\" \"node dist/index.js\""
 	},
 	"keywords": [],
 	"author": "Ángel Zamora",
