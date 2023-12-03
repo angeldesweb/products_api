@@ -3,7 +3,12 @@ import { paginatedResponse } from '../service/formatter';
 import { requestHandler } from '../service/http';
 import { PathBuilder } from '../service/query';
 import 'dotenv/config';
-import { ProductsResponse, RouteParams } from '../types/api';
+import {
+	ProductResponse,
+	ProductsResponse,
+	ProductsParams,
+	ProductParams,
+} from '../types/api';
 import {
 	//Body,
 	//Controller,
@@ -21,6 +26,10 @@ export const productsController = async (
 ) => {
 	try {
 		const handler = new ProductsHandler();
+		if (req.path === '/categories') {
+			const { tags, status } = await handler.getCategories();
+			return res.status(status).json({ tags });
+		}
 		const id = req.params.id;
 		const response = id
 			? await handler.getProduct(id, req.query)
@@ -28,7 +37,7 @@ export const productsController = async (
 
 		return res.status(response.status).json(response);
 	} catch (error) {
-		next(error);
+		return next(error);
 	}
 };
 
@@ -36,12 +45,11 @@ export const productsController = async (
 export class ProductsHandler {
 	/**
 	 * # Recupera una lista de productos
-	 *
-	 * @param query
-	 * @returns
 	 */
 	@Get('')
-	async getProducts(@Queries() query?: RouteParams): Promise<ProductsResponse> {
+	async getProducts(
+		@Queries() query?: ProductsParams
+	): Promise<ProductsResponse> {
 		const path = query ? PathBuilder(query) : '';
 		const { data, status } = await requestHandler(path);
 		const docs = paginatedResponse(
@@ -51,26 +59,28 @@ export class ProductsHandler {
 		);
 		return { docs, status };
 	}
-
+	/**
+	 * # Recupera un producto a través de su id
+	 *
+	 * @param id Al enviar este parámetro de devuelve el producto en el id solicitado.
+	 */
 	@Get('{id}')
-	async getProduct(@Path('id') id: string, @Queries() query?: RouteParams) {
+	async getProduct(
+		@Path('id') id: string,
+		@Queries() query?: ProductParams
+	): Promise<ProductResponse> {
 		let path = `/${id}`;
 		if (query?.select) path = `${path}?select=${query.select}`;
 		const { data, status } = await requestHandler(path);
 
 		return { doc: data, status };
 	}
-}
-
-export const getCategories = async (
-	req: Request,
-	res: Response,
-	next: NextFunction
-) => {
-	try {
+	/**
+	 * # Lista de categorías
+	 */
+	@Get('categories')
+	async getCategories() {
 		const { data, status } = await requestHandler('/categories');
-		return res.status(status).json({ tags: data });
-	} catch (error) {
-		next(error);
+		return { tags: data, status };
 	}
-};
+}

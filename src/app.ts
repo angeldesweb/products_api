@@ -1,6 +1,7 @@
 import type { Application } from 'express';
 import express, { json, urlencoded } from 'express';
 import swui from 'swagger-ui-express';
+import { RegisterRoutes } from '../public/routes';
 import cors from 'cors';
 import { api } from './routes';
 import { ErrorMiddleware } from './middlewares/ErrorMiddleware';
@@ -23,4 +24,7 @@ app.use(
 	})
 );
 
+app.get('/', (req, res) => res.redirect('/docs'));
+
 app.use(ErrorMiddleware);
+RegisterRoutes(app);

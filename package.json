@@ -1,5 +1,5 @@
 {
-	"name": "Product API",
+	"name": "Product_API",
 	"version": "1.0.0",
 	"description": "Una api para el consumo de dummyjson",
 	"main": "index.js",
