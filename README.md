@@ -8,6 +8,7 @@ _En este readme_
 - [Desarrollo](#des)
 - [Compilación](#com)
 - [Notas](#not)
+- [Por hacer](#tod)
 
 ## Instalación<a name="ins"></a>
 
@@ -50,3 +51,11 @@ Este proyecto usa husky, commitlint y conventional commits para una mejor unific
 - [Git commits profesionales - Carlos azaustre](https://www.youtube.com/watch?v=SigVVJmUGv8&t=600s)
 
 - [Mejora los commits de tu equipo - Programación en español](https://www.youtube.com/watch?v=EdXgW4kMWe8)
+
+## TODO's<a name="tod"></a>
+
+- [ ] Agregar tests unitarios
+
+- [ ] Automatizar un changelog
+
+- [ ] Añadir manifiesto CONTRIBUTTING
